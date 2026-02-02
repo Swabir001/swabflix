@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Menu } from 'lucide-react';
+import { Menu, Search } from 'lucide-react';
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
 import { SearchBar } from './SearchBar';
 import { NotificationDropdown } from './NotificationDropdown';
@@ -24,6 +24,7 @@ const NAV_ITEMS: { label: string; page: PageType }[] = [
 export function Navbar({ onMovieSelect = () => {}, currentPage, onNavigate }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const { scrollY } = useScroll();
 
   useMotionValueEvent(scrollY, 'change', (latest) => {
@@ -40,20 +41,20 @@ export function Navbar({ onMovieSelect = () => {}, currentPage, onNavigate }: Na
         animate={{ y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="px-4 md:px-12 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-6 md:gap-8">
+        <div className="px-3 sm:px-4 md:px-12 py-2.5 sm:py-3 flex items-center justify-between">
+          <div className="flex items-center gap-4 sm:gap-6 md:gap-8">
             {/* Mobile menu button */}
             <button
               onClick={() => setMobileMenuOpen(true)}
               className="md:hidden text-white p-1"
             >
-              <Menu className="w-6 h-6" />
+              <Menu className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
 
             {/* Logo */}
             <button
               onClick={() => onNavigate('home')}
-              className="text-[#e50914] text-2xl md:text-3xl font-bold tracking-tighter uppercase"
+              className="text-[#e50914] text-xl sm:text-2xl md:text-3xl font-bold tracking-tighter uppercase"
             >
               SWABFLIX
             </button>
@@ -77,7 +78,16 @@ export function Navbar({ onMovieSelect = () => {}, currentPage, onNavigate }: Na
             </ul>
           </div>
 
-          <div className="flex items-center gap-4 md:gap-5 text-white">
+          <div className="flex items-center gap-3 sm:gap-4 md:gap-5 text-white">
+            {/* Mobile search icon */}
+            <button
+              onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
+              className="md:hidden p-1"
+            >
+              <Search className="w-5 h-5" />
+            </button>
+
+            {/* Desktop search */}
             <div className="hidden md:block">
               <SearchBar onMovieSelect={onMovieSelect} />
             </div>
@@ -87,6 +97,21 @@ export function Navbar({ onMovieSelect = () => {}, currentPage, onNavigate }: Na
             <ProfileDropdown />
           </div>
         </div>
+
+        {/* Mobile search bar (slides down) */}
+        {mobileSearchOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="md:hidden px-3 pb-3"
+          >
+            <SearchBar onMovieSelect={(movie) => {
+              onMovieSelect(movie);
+              setMobileSearchOpen(false);
+            }} />
+          </motion.div>
+        )}
       </motion.nav>
 
       <MobileMenu

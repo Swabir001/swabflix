@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import { Movie } from '../types';
 
 interface TopTenCardProps {
@@ -9,14 +10,16 @@ interface TopTenCardProps {
 
 export function TopTenCard({ movie, rank, onMoreInfo }: TopTenCardProps) {
   return (
-    <div
-      className="relative flex-shrink-0 w-[200px] md:w-[260px] h-[150px] md:h-[180px] cursor-pointer group"
+    <motion.div
+      whileHover={{ scale: 1.05 }}
+      transition={{ duration: 0.2 }}
+      className="relative flex-shrink-0 w-[160px] sm:w-[200px] md:w-[260px] h-[120px] sm:h-[150px] md:h-[180px] cursor-pointer group"
       onClick={() => onMoreInfo?.(movie)}
     >
       {/* Rank number */}
-      <div className="absolute -left-2 bottom-0 z-10">
+      <div className="absolute -left-1 sm:-left-2 bottom-0 z-10">
         <span
-          className="text-[100px] md:text-[140px] font-black leading-none select-none"
+          className="text-[70px] sm:text-[100px] md:text-[140px] font-black leading-none select-none"
           style={{
             WebkitTextStroke: '3px #e5e5e5',
             color: 'transparent',
@@ -36,6 +39,6 @@ export function TopTenCard({ movie, rank, onMoreInfo }: TopTenCardProps) {
           loading="lazy"
         />
       </div>
-    </div>
+    </motion.div>
   );
 }
