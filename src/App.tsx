@@ -17,7 +17,7 @@ export function App() {
   const [currentPage, setCurrentPage] = useState<PageType>('home');
   const { categories, featuredMovie, loading } = useMovies(currentPage);
   const { myList } = useMyList();
-  const { continueWatching, addToHistory } = useWatchHistory();
+  const { continueWatching, addToHistory, removeFromHistory } = useWatchHistory();
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const [playingVideo, setPlayingVideo] = useState<{
     source: StreamingSource;
@@ -44,6 +44,10 @@ export function App() {
     } else {
       alert('No video source available for this episode yet.');
     }
+  };
+
+  const handleRemoveFromHistory = (movie: Movie) => {
+    removeFromHistory(movie.id);
   };
 
   const handleNavigate = (page: PageType) => {
@@ -83,8 +87,8 @@ export function App() {
         >
           {/* My List page */}
           {currentPage === 'mylist' ? (
-            <div className="pt-24 md:pt-28 px-4 md:px-12">
-              <h1 className="text-2xl md:text-4xl font-bold text-white mb-8">My List</h1>
+            <div className="pt-20 sm:pt-24 md:pt-28 px-3 sm:px-4 md:px-12">
+              <h1 className="text-xl sm:text-2xl md:text-4xl font-bold text-white mb-6 sm:mb-8">My List</h1>
               <ContentGrid
                 items={myList}
                 onPlay={handlePlay}
@@ -103,7 +107,7 @@ export function App() {
               )}
 
               {/* Content rows */}
-              <div className="relative z-10 -mt-16 md:-mt-32 space-y-4 md:space-y-8 pb-10">
+              <div className="relative z-10 -mt-8 sm:-mt-16 md:-mt-32 space-y-2 sm:space-y-4 md:space-y-6 pb-10">
                 {/* Continue Watching */}
                 {continueWatching.length > 0 && (
                   <MovieCarousel
@@ -111,6 +115,8 @@ export function App() {
                     movies={continueWatching.map((h) => h.item)}
                     onPlay={handlePlay}
                     onMoreInfo={setSelectedMovie}
+                    onRemove={handleRemoveFromHistory}
+                    showRemove
                   />
                 )}
 
@@ -152,36 +158,36 @@ export function App() {
       </AnimatePresence>
 
       {/* Footer */}
-      <footer className="w-full bg-[#0a0a0a] border-t border-gray-800/50 py-12 px-4 md:px-12 text-gray-500 text-sm">
+      <footer className="w-full bg-[#0a0a0a] border-t border-gray-800/50 py-8 sm:py-12 px-4 md:px-12 text-gray-500 text-sm">
         <div className="max-w-6xl mx-auto">
-          <div className="flex items-center gap-4 mb-8">
+          <div className="flex items-center gap-4 mb-6 sm:mb-8">
             <span className="text-[#e50914] text-xl font-bold tracking-tighter uppercase">SWABFLIX</span>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-            <div className="space-y-3">
-              <p className="hover:underline cursor-pointer hover:text-gray-300 transition">Audio Description</p>
-              <p className="hover:underline cursor-pointer hover:text-gray-300 transition">Investor Relations</p>
-              <p className="hover:underline cursor-pointer hover:text-gray-300 transition">Legal Notices</p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
+            <div className="space-y-2 sm:space-y-3">
+              <p className="hover:underline cursor-pointer hover:text-gray-300 transition text-xs sm:text-sm">Audio Description</p>
+              <p className="hover:underline cursor-pointer hover:text-gray-300 transition text-xs sm:text-sm">Investor Relations</p>
+              <p className="hover:underline cursor-pointer hover:text-gray-300 transition text-xs sm:text-sm">Legal Notices</p>
             </div>
-            <div className="space-y-3">
-              <p className="hover:underline cursor-pointer hover:text-gray-300 transition">Help Center</p>
-              <p className="hover:underline cursor-pointer hover:text-gray-300 transition">Jobs</p>
-              <p className="hover:underline cursor-pointer hover:text-gray-300 transition">Cookie Preferences</p>
+            <div className="space-y-2 sm:space-y-3">
+              <p className="hover:underline cursor-pointer hover:text-gray-300 transition text-xs sm:text-sm">Help Center</p>
+              <p className="hover:underline cursor-pointer hover:text-gray-300 transition text-xs sm:text-sm">Jobs</p>
+              <p className="hover:underline cursor-pointer hover:text-gray-300 transition text-xs sm:text-sm">Cookie Preferences</p>
             </div>
-            <div className="space-y-3">
-              <p className="hover:underline cursor-pointer hover:text-gray-300 transition">Gift Cards</p>
-              <p className="hover:underline cursor-pointer hover:text-gray-300 transition">Terms of Use</p>
-              <p className="hover:underline cursor-pointer hover:text-gray-300 transition">Corporate Information</p>
+            <div className="space-y-2 sm:space-y-3">
+              <p className="hover:underline cursor-pointer hover:text-gray-300 transition text-xs sm:text-sm">Gift Cards</p>
+              <p className="hover:underline cursor-pointer hover:text-gray-300 transition text-xs sm:text-sm">Terms of Use</p>
+              <p className="hover:underline cursor-pointer hover:text-gray-300 transition text-xs sm:text-sm">Corporate Information</p>
             </div>
-            <div className="space-y-3">
-              <p className="hover:underline cursor-pointer hover:text-gray-300 transition">Media Center</p>
-              <p className="hover:underline cursor-pointer hover:text-gray-300 transition">Privacy</p>
-              <p className="hover:underline cursor-pointer hover:text-gray-300 transition">Contact Us</p>
+            <div className="space-y-2 sm:space-y-3">
+              <p className="hover:underline cursor-pointer hover:text-gray-300 transition text-xs sm:text-sm">Media Center</p>
+              <p className="hover:underline cursor-pointer hover:text-gray-300 transition text-xs sm:text-sm">Privacy</p>
+              <p className="hover:underline cursor-pointer hover:text-gray-300 transition text-xs sm:text-sm">Contact Us</p>
             </div>
           </div>
-          <div className="flex items-center justify-between border-t border-gray-800/50 pt-6">
-            <p className="text-xs text-gray-600">&copy; {new Date().getFullYear()} Swabflix, Inc.</p>
-            <button className="border border-gray-600 px-3 py-1 text-xs hover:text-white hover:border-gray-400 transition rounded">
+          <div className="flex items-center justify-between border-t border-gray-800/50 pt-4 sm:pt-6">
+            <p className="text-[10px] sm:text-xs text-gray-600">&copy; {new Date().getFullYear()} Swabflix, Inc.</p>
+            <button className="border border-gray-600 px-2 sm:px-3 py-1 text-[10px] sm:text-xs hover:text-white hover:border-gray-400 transition rounded">
               Service Code
             </button>
           </div>

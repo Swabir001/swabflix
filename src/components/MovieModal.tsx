@@ -88,7 +88,7 @@ export function MovieModal({ movie, onClose, onPlay, onPlayEpisode }: MovieModal
   const displayMovie = details || movie;
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-start justify-center pt-8 md:pt-12 px-4 overflow-y-auto">
+    <div className="fixed inset-0 z-[60] flex items-start justify-center overflow-y-auto overscroll-contain">
       {/* Backdrop */}
       <motion.div
         initial={{ opacity: 0 }}
@@ -100,17 +100,18 @@ export function MovieModal({ movie, onClose, onPlay, onPlayEpisode }: MovieModal
 
       {/* Modal Content */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        initial={{ opacity: 0, scale: 0.95, y: 30 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.95, y: 20 }}
-        className="relative w-full max-w-4xl bg-[#181818] rounded-xl shadow-2xl overflow-hidden mb-12"
+        exit={{ opacity: 0, scale: 0.95, y: 30 }}
+        transition={{ duration: 0.3, ease: 'easeOut' }}
+        className="relative w-full max-w-4xl bg-[#181818] rounded-xl shadow-2xl overflow-hidden my-4 sm:my-8 md:my-12 mx-2 sm:mx-4"
       >
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-20 p-2 rounded-full bg-[#181818]/80 text-white hover:bg-white/20 transition"
+          className="absolute top-3 right-3 z-20 p-2 rounded-full bg-[#181818]/80 text-white hover:bg-white/20 transition"
         >
-          <X className="w-6 h-6" />
+          <X className="w-5 h-5 sm:w-6 sm:h-6" />
         </button>
 
         {/* Hero Image / Trailer */}
@@ -134,51 +135,51 @@ export function MovieModal({ movie, onClose, onPlay, onPlayEpisode }: MovieModal
           <div className="absolute inset-0 bg-gradient-to-t from-[#181818] via-transparent to-transparent pointer-events-none" />
 
           {/* Title & Controls overlay */}
-          <div className="absolute bottom-0 left-0 w-full p-6 md:p-10">
-            <h2 className="text-2xl md:text-4xl font-bold text-white mb-4 drop-shadow-lg">
+          <div className="absolute bottom-0 left-0 w-full p-4 sm:p-6 md:p-10">
+            <h2 className="text-xl sm:text-2xl md:text-4xl font-bold text-white mb-3 sm:mb-4 drop-shadow-lg line-clamp-2">
               {displayMovie.title}
             </h2>
 
-            <div className="flex items-center gap-3 flex-wrap">
+            <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
               <button
                 onClick={onPlay}
-                className="flex items-center gap-2 bg-white text-black px-5 py-2 md:px-7 md:py-2.5 rounded font-bold hover:bg-white/90 transition text-sm"
+                className="flex items-center gap-1.5 sm:gap-2 bg-white text-black px-4 py-1.5 sm:px-5 sm:py-2 md:px-7 md:py-2.5 rounded font-bold hover:bg-white/90 transition text-xs sm:text-sm"
               >
-                <Play className="w-4 h-4 fill-black" />
+                <Play className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-black" />
                 {isTV ? 'Play S1:E1' : 'Play'}
               </button>
 
               {displayMovie.trailerUrl && (
                 <button
                   onClick={() => setShowTrailer(!showTrailer)}
-                  className="flex items-center gap-2 bg-gray-600/50 text-white px-4 py-2 md:px-6 md:py-2.5 rounded font-semibold hover:bg-gray-600/70 transition backdrop-blur-sm text-sm"
+                  className="flex items-center gap-1.5 sm:gap-2 bg-gray-600/50 text-white px-3 py-1.5 sm:px-4 sm:py-2 md:px-6 md:py-2.5 rounded font-semibold hover:bg-gray-600/70 transition backdrop-blur-sm text-xs sm:text-sm"
                 >
-                  <Tv className="w-4 h-4" />
-                  {showTrailer ? 'Hide Trailer' : 'Watch Trailer'}
+                  <Tv className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  {showTrailer ? 'Hide Trailer' : 'Trailer'}
                 </button>
               )}
 
               <button
                 onClick={() => toggleMyList(displayMovie)}
-                className="p-2.5 rounded-full border-2 border-gray-500 text-gray-300 hover:border-white hover:text-white transition bg-black/30 backdrop-blur-sm"
+                className="p-2 sm:p-2.5 rounded-full border-2 border-gray-500 text-gray-300 hover:border-white hover:text-white transition bg-black/30 backdrop-blur-sm"
               >
-                {inList ? <Check className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
+                {inList ? <Check className="w-4 h-4 sm:w-5 sm:h-5" /> : <Plus className="w-4 h-4 sm:w-5 sm:h-5" />}
               </button>
 
-              <button className="p-2.5 rounded-full border-2 border-gray-500 text-gray-300 hover:border-white hover:text-white transition bg-black/30 backdrop-blur-sm">
-                <ThumbsUp className="w-5 h-5" />
+              <button className="p-2 sm:p-2.5 rounded-full border-2 border-gray-500 text-gray-300 hover:border-white hover:text-white transition bg-black/30 backdrop-blur-sm">
+                <ThumbsUp className="w-4 h-4 sm:w-5 sm:h-5" />
               </button>
             </div>
           </div>
         </div>
 
         {/* Details Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-6 p-6 md:p-10 pt-2">
-          <div className="space-y-4">
-            <div className="flex items-center gap-3 text-sm flex-wrap">
+        <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-4 sm:gap-6 p-4 sm:p-6 md:p-10 pt-2">
+          <div className="space-y-3 sm:space-y-4">
+            <div className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm flex-wrap">
               <span className="text-[#46d369] font-bold">{displayMovie.match}% Match</span>
               <span className="text-gray-400">{displayMovie.year}</span>
-              <span className="border border-gray-500 px-2 py-0.5 text-xs text-gray-300 rounded-sm">
+              <span className="border border-gray-500 px-1.5 sm:px-2 py-0.5 text-[10px] sm:text-xs text-gray-300 rounded-sm">
                 {displayMovie.rating}
               </span>
               <span className="text-gray-400">{displayMovie.duration}</span>
@@ -188,12 +189,12 @@ export function MovieModal({ movie, onClose, onPlay, onPlayEpisode }: MovieModal
                 </span>
               )}
             </div>
-            <p className="text-white/90 text-sm md:text-base leading-relaxed">
+            <p className="text-white/90 text-xs sm:text-sm md:text-base leading-relaxed">
               {displayMovie.description}
             </p>
           </div>
 
-          <div className="space-y-4 text-sm">
+          <div className="space-y-3 sm:space-y-4 text-xs sm:text-sm">
             {displayMovie.cast && displayMovie.cast.length > 0 && (
               <div>
                 <span className="text-gray-500">Cast: </span>
@@ -211,16 +212,16 @@ export function MovieModal({ movie, onClose, onPlay, onPlayEpisode }: MovieModal
 
         {/* Episodes Section (TV only) */}
         {isTV && (
-          <div className="p-6 md:p-10 pt-0 border-t border-gray-800 mt-2">
-            <div className="flex items-center justify-between mt-6 mb-5">
-              <h3 className="text-lg font-bold text-white">Episodes</h3>
+          <div className="p-4 sm:p-6 md:p-10 pt-0 border-t border-gray-800 mt-2">
+            <div className="flex items-center justify-between mt-4 sm:mt-6 mb-4 sm:mb-5">
+              <h3 className="text-base sm:text-lg font-bold text-white">Episodes</h3>
 
               {/* Season selector */}
               {seasonCount > 1 && (
                 <div className="relative">
                   <button
                     onClick={() => setSeasonDropdownOpen(!seasonDropdownOpen)}
-                    className="flex items-center gap-2 bg-[#242424] border border-gray-600 text-white px-4 py-2 rounded text-sm font-medium hover:border-gray-400 transition"
+                    className="flex items-center gap-2 bg-[#242424] border border-gray-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded text-xs sm:text-sm font-medium hover:border-gray-400 transition"
                   >
                     Season {selectedSeason}
                     <ChevronDown className={`w-4 h-4 transition ${seasonDropdownOpen ? 'rotate-180' : ''}`} />
@@ -260,8 +261,8 @@ export function MovieModal({ movie, onClose, onPlay, onPlayEpisode }: MovieModal
             {loadingEpisodes ? (
               <div className="space-y-3">
                 {[1, 2, 3].map((i) => (
-                  <div key={i} className="animate-pulse flex gap-4 p-3 bg-[#242424] rounded-lg">
-                    <div className="w-32 h-20 bg-gray-700 rounded flex-shrink-0" />
+                  <div key={i} className="animate-pulse flex gap-3 sm:gap-4 p-3 bg-[#242424] rounded-lg">
+                    <div className="w-24 sm:w-32 h-16 sm:h-20 bg-gray-700 rounded flex-shrink-0" />
                     <div className="flex-1 space-y-2 py-1">
                       <div className="h-4 bg-gray-700 rounded w-1/3" />
                       <div className="h-3 bg-gray-700 rounded w-2/3" />
@@ -276,15 +277,15 @@ export function MovieModal({ movie, onClose, onPlay, onPlayEpisode }: MovieModal
                   <button
                     key={ep.id}
                     onClick={() => onPlayEpisode?.(displayMovie, ep.seasonNumber, ep.episodeNumber)}
-                    className="w-full flex items-start gap-4 p-3 md:p-4 rounded-lg hover:bg-[#2a2a2a] transition group text-left"
+                    className="w-full flex items-start gap-3 sm:gap-4 p-3 md:p-4 rounded-lg hover:bg-[#2a2a2a] transition group text-left"
                   >
                     {/* Episode number */}
-                    <div className="flex-shrink-0 w-8 text-center">
-                      <span className="text-gray-500 text-lg font-medium">{ep.episodeNumber}</span>
+                    <div className="flex-shrink-0 w-6 sm:w-8 text-center">
+                      <span className="text-gray-500 text-base sm:text-lg font-medium">{ep.episodeNumber}</span>
                     </div>
 
                     {/* Thumbnail */}
-                    <div className="relative flex-shrink-0 w-28 md:w-36 aspect-video rounded overflow-hidden bg-gray-800">
+                    <div className="relative flex-shrink-0 w-24 sm:w-28 md:w-36 aspect-video rounded overflow-hidden bg-gray-800">
                       {ep.stillUrl ? (
                         <img
                           src={ep.stillUrl}
@@ -294,12 +295,12 @@ export function MovieModal({ movie, onClose, onPlay, onPlayEpisode }: MovieModal
                         />
                       ) : (
                         <div className="w-full h-full bg-gray-700 flex items-center justify-center">
-                          <Play className="w-6 h-6 text-gray-500" />
+                          <Play className="w-5 h-5 sm:w-6 sm:h-6 text-gray-500" />
                         </div>
                       )}
                       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition bg-black/40">
                         <div className="bg-white/90 rounded-full p-1.5">
-                          <Play className="w-5 h-5 fill-black text-black" />
+                          <Play className="w-4 h-4 sm:w-5 sm:h-5 fill-black text-black" />
                         </div>
                       </div>
                     </div>
@@ -307,16 +308,16 @@ export function MovieModal({ movie, onClose, onPlay, onPlayEpisode }: MovieModal
                     {/* Info */}
                     <div className="flex-1 min-w-0 py-0.5">
                       <div className="flex items-center justify-between gap-2">
-                        <h4 className="text-white text-sm font-medium truncate">
+                        <h4 className="text-white text-xs sm:text-sm font-medium truncate">
                           {ep.name}
                         </h4>
                         {ep.runtime && (
-                          <span className="text-gray-500 text-xs flex-shrink-0">
+                          <span className="text-gray-500 text-[10px] sm:text-xs flex-shrink-0">
                             {ep.runtime}m
                           </span>
                         )}
                       </div>
-                      <p className="text-gray-500 text-xs mt-1.5 line-clamp-2 leading-relaxed">
+                      <p className="text-gray-500 text-[10px] sm:text-xs mt-1 sm:mt-1.5 line-clamp-2 leading-relaxed">
                         {ep.overview || 'No description available.'}
                       </p>
                     </div>
@@ -331,13 +332,15 @@ export function MovieModal({ movie, onClose, onPlay, onPlayEpisode }: MovieModal
 
         {/* Similar content */}
         {similarMovies.length > 0 && (
-          <div className="p-6 md:p-10 pt-0 border-t border-gray-800 mt-2">
-            <h3 className="text-lg font-bold text-white mb-5 mt-6">More Like This</h3>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+          <div className="p-4 sm:p-6 md:p-10 pt-0 border-t border-gray-800 mt-2">
+            <h3 className="text-base sm:text-lg font-bold text-white mb-4 sm:mb-5 mt-4 sm:mt-6">More Like This</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
               {similarMovies.map((m) => (
-                <div
+                <motion.div
                   key={`${m.mediaType}-${m.id}`}
-                  className="bg-[#2a2a2a] rounded-md overflow-hidden cursor-pointer hover:bg-[#333] transition group"
+                  whileHover={{ scale: 1.03 }}
+                  transition={{ duration: 0.2 }}
+                  className="bg-[#2a2a2a] rounded-md overflow-hidden cursor-pointer group"
                 >
                   <div className="relative aspect-video">
                     <img
@@ -348,7 +351,7 @@ export function MovieModal({ movie, onClose, onPlay, onPlayEpisode }: MovieModal
                     />
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition bg-black/40">
                       <div className="bg-white/90 rounded-full p-2">
-                        <Play className="w-6 h-6 fill-black text-black" />
+                        <Play className="w-5 h-5 sm:w-6 sm:h-6 fill-black text-black" />
                       </div>
                     </div>
                     {m.mediaType === 'tv' && (
@@ -357,19 +360,19 @@ export function MovieModal({ movie, onClose, onPlay, onPlayEpisode }: MovieModal
                       </span>
                     )}
                   </div>
-                  <div className="p-3">
-                    <h4 className="text-gray-300 font-semibold text-sm mb-1.5 line-clamp-1">
+                  <div className="p-2 sm:p-3">
+                    <h4 className="text-gray-300 font-semibold text-xs sm:text-sm mb-1 sm:mb-1.5 line-clamp-1">
                       {m.title}
                     </h4>
-                    <div className="flex items-center gap-2 text-xs text-gray-500">
+                    <div className="flex items-center gap-2 text-[10px] sm:text-xs text-gray-500">
                       <span className="text-[#46d369]">{m.match}%</span>
                       <span>{m.year}</span>
                     </div>
-                    <p className="text-gray-500 text-xs mt-1.5 line-clamp-2">
+                    <p className="text-gray-500 text-[10px] sm:text-xs mt-1 sm:mt-1.5 line-clamp-2">
                       {m.description}
                     </p>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
