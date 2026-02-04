@@ -1,7 +1,7 @@
 import { Movie } from '../types';
 import { Play, Plus, Check } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useMyList } from '../hooks/useMyList';
+import { useMyList } from '../contexts/MyListContext';
 
 interface ContentGridProps {
   items: Movie[];
