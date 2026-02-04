@@ -8,6 +8,8 @@ A full-featured Netflix-style streaming app built with React, TypeScript, and th
 ![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-3-06B6D4?logo=tailwindcss&logoColor=white)
 
 ---
+<img width="1470" height="834" alt="image" src="https://github.com/user-attachments/assets/63abfa55-f9f4-48fc-ae25-c4b88a74caf4" />
+
 
 ## Features
 
