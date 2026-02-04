@@ -26,6 +26,9 @@ A full-featured Netflix-style streaming app built with React, TypeScript, and th
 - Season selector dropdown
 - Stream any episode directly
 
+  <img width="1463" height="801" alt="image" src="https://github.com/user-attachments/assets/4760af9f-d4e8-41ea-bf5b-90bba5f0288c" />
+
+
 **Streaming & Trailers**
 - Stream movies and TV episodes via embedded player
 - YouTube trailers auto-play in hero section and movie details
