@@ -62,7 +62,7 @@ export function MovieCarousel({
 
         <div
           ref={rowRef}
-          className="flex items-start gap-1.5 sm:gap-2 md:gap-3 overflow-x-scroll scrollbar-hide px-4 md:px-12 py-2 pb-4"
+          className="flex items-center gap-1.5 sm:gap-2 md:gap-3 overflow-x-scroll overflow-y-visible scrollbar-hide px-4 md:px-12 py-8 md:py-12"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           {isTopTen

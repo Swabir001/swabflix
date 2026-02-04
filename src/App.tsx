@@ -7,17 +7,21 @@ import { MovieModal } from './components/MovieModal';
 import { VideoPlayer } from './components/VideoPlayer';
 import { SkeletonLoader } from './components/SkeletonLoader';
 import { ContentGrid } from './components/ContentGrid';
+import { FloatingTrailerPlayer } from './components/FloatingTrailerPlayer';
 import { useMovies } from './hooks/useMovies';
-import { useMyList } from './hooks/useMyList';
+import { useMyList } from './contexts/MyListContext';
 import { useWatchHistory } from './hooks/useWatchHistory';
+import { ActiveMovieProvider, useActiveMovie } from './contexts/ActiveMovieContext';
+import { MyListProvider } from './contexts/MyListContext';
 import { Movie, StreamingSource, PageType } from './types';
 import { streamingService } from './services/streaming';
 
-export function App() {
+function AppContent() {
   const [currentPage, setCurrentPage] = useState<PageType>('home');
   const { categories, featuredMovie, loading } = useMovies(currentPage);
   const { myList } = useMyList();
   const { continueWatching, addToHistory, removeFromHistory } = useWatchHistory();
+  const { clearActiveMovie } = useActiveMovie();
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const [playingVideo, setPlayingVideo] = useState<{
     source: StreamingSource;
@@ -26,6 +30,7 @@ export function App() {
 
   const handlePlay = async (movie: Movie) => {
     setSelectedMovie(null);
+    clearActiveMovie(); // Stop any playing trailers
     addToHistory(movie);
     const source = await streamingService.getStreamUrl(movie.id, movie.mediaType);
     if (source) {
@@ -37,6 +42,7 @@ export function App() {
 
   const handlePlayEpisode = async (movie: Movie, season: number, episode: number) => {
     setSelectedMovie(null);
+    clearActiveMovie(); // Stop any playing trailers
     addToHistory(movie);
     const source = await streamingService.getStreamUrl(movie.id, 'tv', season, episode);
     if (source) {
@@ -44,6 +50,13 @@ export function App() {
     } else {
       alert('No video source available for this episode yet.');
     }
+  };
+
+  const handleSelectMovie = (movie: Movie | null) => {
+    if (movie) {
+      clearActiveMovie(); // Stop any playing trailers when opening modal
+    }
+    setSelectedMovie(movie);
   };
 
   const handleRemoveFromHistory = (movie: Movie) => {
@@ -59,7 +72,7 @@ export function App() {
     return (
       <>
         <Navbar
-          onMovieSelect={setSelectedMovie}
+          onMovieSelect={handleSelectMovie}
           currentPage={currentPage}
           onNavigate={handleNavigate}
         />
@@ -71,7 +84,7 @@ export function App() {
   return (
     <div className="relative min-h-screen w-full bg-[#0a0a0a] overflow-x-hidden">
       <Navbar
-        onMovieSelect={setSelectedMovie}
+        onMovieSelect={handleSelectMovie}
         currentPage={currentPage}
         onNavigate={handleNavigate}
       />
@@ -92,7 +105,7 @@ export function App() {
               <ContentGrid
                 items={myList}
                 onPlay={handlePlay}
-                onMoreInfo={setSelectedMovie}
+                onMoreInfo={handleSelectMovie}
               />
             </div>
           ) : (
@@ -102,7 +115,7 @@ export function App() {
                 <HeroSection
                   movie={featuredMovie}
                   onPlay={handlePlay}
-                  onMoreInfo={setSelectedMovie}
+                  onMoreInfo={handleSelectMovie}
                 />
               )}
 
@@ -114,7 +127,7 @@ export function App() {
                     title="Continue Watching"
                     movies={continueWatching.map((h) => h.item)}
                     onPlay={handlePlay}
-                    onMoreInfo={setSelectedMovie}
+                    onMoreInfo={handleSelectMovie}
                     onRemove={handleRemoveFromHistory}
                     showRemove
                   />
@@ -126,7 +139,7 @@ export function App() {
                     title="My List"
                     movies={myList}
                     onPlay={handlePlay}
-                    onMoreInfo={setSelectedMovie}
+                    onMoreInfo={handleSelectMovie}
                   />
                 )}
 
@@ -136,7 +149,7 @@ export function App() {
                     title={`Top 10 ${currentPage === 'tvshows' ? 'TV Shows' : 'Movies'} Today`}
                     movies={categories[0].movies}
                     onPlay={handlePlay}
-                    onMoreInfo={setSelectedMovie}
+                    onMoreInfo={handleSelectMovie}
                     isTopTen
                   />
                 )}
@@ -148,7 +161,7 @@ export function App() {
                     title={category.title}
                     movies={category.movies}
                     onPlay={handlePlay}
-                    onMoreInfo={setSelectedMovie}
+                    onMoreInfo={handleSelectMovie}
                   />
                 ))}
               </div>
@@ -194,6 +207,9 @@ export function App() {
         </div>
       </footer>
 
+      {/* Floating Trailer Player - shows when scrolled past hero */}
+      <FloatingTrailerPlayer onMoreInfo={handleSelectMovie} />
+
       {/* Modals & Overlays */}
       <AnimatePresence>
         {selectedMovie && (
@@ -202,6 +218,7 @@ export function App() {
             onClose={() => setSelectedMovie(null)}
             onPlay={() => handlePlay(selectedMovie)}
             onPlayEpisode={handlePlayEpisode}
+            onSelectMovie={handleSelectMovie}
           />
         )}
         {playingVideo && (
@@ -213,5 +230,15 @@ export function App() {
         )}
       </AnimatePresence>
     </div>
+  );
+}
+
+export function App() {
+  return (
+    <MyListProvider>
+      <ActiveMovieProvider>
+        <AppContent />
+      </ActiveMovieProvider>
+    </MyListProvider>
   );
 }

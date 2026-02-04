@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { X, ArrowLeft } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { X, ArrowLeft, Maximize, Minimize } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { StreamingSource } from '../types';
 
@@ -10,20 +10,46 @@ interface VideoPlayerProps {
 }
 
 export function VideoPlayer({ source, title, onClose }: VideoPlayerProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === 'Escape' && !document.fullscreenElement) {
+        onClose();
+      }
     };
+
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+
     window.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
     document.body.style.overflow = 'hidden';
+
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
       document.body.style.overflow = '';
     };
   }, [onClose]);
 
+  const toggleFullscreen = async () => {
+    try {
+      if (!document.fullscreenElement && containerRef.current) {
+        await containerRef.current.requestFullscreen();
+      } else if (document.fullscreenElement) {
+        await document.exitFullscreen();
+      }
+    } catch (err) {
+      console.error('Fullscreen error:', err);
+    }
+  };
+
   return (
     <motion.div
+      ref={containerRef}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -42,12 +68,21 @@ export function VideoPlayer({ source, title, onClose }: VideoPlayerProps) {
             {title}
           </h2>
         </div>
-        <button
-          onClick={onClose}
-          className="p-2 rounded-full bg-black/50 hover:bg-white/20 text-white transition"
-        >
-          <X className="w-6 h-6" />
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={toggleFullscreen}
+            className="p-2 rounded-full bg-black/50 hover:bg-white/20 text-white transition"
+            title={isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'}
+          >
+            {isFullscreen ? <Minimize className="w-6 h-6" /> : <Maximize className="w-6 h-6" />}
+          </button>
+          <button
+            onClick={onClose}
+            className="p-2 rounded-full bg-black/50 hover:bg-white/20 text-white transition"
+          >
+            <X className="w-6 h-6" />
+          </button>
+        </div>
       </div>
 
       {/* Player */}

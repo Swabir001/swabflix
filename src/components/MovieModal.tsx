@@ -3,16 +3,17 @@ import { X, Play, Plus, Check, ThumbsUp, Tv, ChevronDown } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Movie, SeasonDetail } from '../types';
 import { tmdbService } from '../services/tmdb';
-import { useMyList } from '../hooks/useMyList';
+import { useMyList } from '../contexts/MyListContext';
 
 interface MovieModalProps {
   movie: Movie;
   onClose: () => void;
   onPlay: () => void;
   onPlayEpisode?: (movie: Movie, season: number, episode: number) => void;
+  onSelectMovie?: (movie: Movie) => void;
 }
 
-export function MovieModal({ movie, onClose, onPlay, onPlayEpisode }: MovieModalProps) {
+export function MovieModal({ movie, onClose, onPlay, onPlayEpisode, onSelectMovie }: MovieModalProps) {
   const [details, setDetails] = useState<Movie | null>(null);
   const [similarMovies, setSimilarMovies] = useState<Movie[]>([]);
   const [showTrailer, setShowTrailer] = useState(false);
@@ -340,6 +341,7 @@ export function MovieModal({ movie, onClose, onPlay, onPlayEpisode }: MovieModal
                   key={`${m.mediaType}-${m.id}`}
                   whileHover={{ scale: 1.03 }}
                   transition={{ duration: 0.2 }}
+                  onClick={() => onSelectMovie?.(m)}
                   className="bg-[#2a2a2a] rounded-md overflow-hidden cursor-pointer group"
                 >
                   <div className="relative aspect-video">
