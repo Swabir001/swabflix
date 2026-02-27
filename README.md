@@ -9,6 +9,24 @@ A full-featured Netflix-style streaming app built with React, TypeScript, and th
 
 ---
 
+## Screenshots
+
+**Home — Hero banner with trailer, Continue Watching, and genre rows**
+
+![Home](screenshots/home.png)
+
+**Movie Detail — Cast, match score, and "More Like This" recommendations**
+
+![Movie Modal](screenshots/movie-modal.png)
+
+**TV Shows — Season selector with full episode browser**
+
+![TV Episodes](screenshots/tv-episodes.png)
+
+
+---
+
+
 ## Features
 
 **Browse & Discover**
@@ -160,21 +178,6 @@ Output goes to `dist/` — deploy this folder to any static host (Render, Vercel
 | **New & Popular** | Now playing, upcoming, airing today |
 | **My List** | Full grid of saved movies and shows |
 
----
-
-## Screenshots
-
-**Home — Hero banner with trailer, Continue Watching, and genre rows**
-
-![Home](screenshots/home.png)
-
-**Movie Detail — Cast, match score, and "More Like This" recommendations**
-
-![Movie Modal](screenshots/movie-modal.png)
-
-**TV Shows — Season selector with full episode browser**
-
-![TV Episodes](screenshots/tv-episodes.png)
 
 ---
 
