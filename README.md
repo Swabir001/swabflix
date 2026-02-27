@@ -2,12 +2,6 @@
 
 A full-featured Netflix-style streaming app built with React, TypeScript, and the TMDB API. Browse movies and TV shows, watch trailers, stream content, manage your list, and track watch history — all in a sleek dark UI.
 
-![Home](screenshots/home.png)
-
-| Movie Modal | TV Episodes |
-|---|---|
-| ![Movie Modal](screenshots/movie-modal.png) | ![TV Episodes](screenshots/tv-episodes.png) |
-
 ![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite-5-646CFF?logo=vite&logoColor=white)
@@ -165,6 +159,22 @@ Output goes to `dist/` — deploy this folder to any static host (Render, Vercel
 | **Movies** | Movie-only content — popular, top-rated, genre categories |
 | **New & Popular** | Now playing, upcoming, airing today |
 | **My List** | Full grid of saved movies and shows |
+
+---
+
+## Screenshots
+
+**Home — Hero banner with trailer, Continue Watching, and genre rows**
+
+![Home](screenshots/home.png)
+
+**Movie Detail — Cast, match score, and "More Like This" recommendations**
+
+![Movie Modal](screenshots/movie-modal.png)
+
+**TV Shows — Season selector with full episode browser**
+
+![TV Episodes](screenshots/tv-episodes.png)
 
 ---
 
